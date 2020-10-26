@@ -1,1 +1,103 @@
-// insert something 
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "width": 800,
+  "height": 600,
+  "title": "Profits vs. Number of employees in the Fortune 500",
+  "data": {
+    "url": "https://raw.githubusercontent.com/Victor-utf/FIT3179-Visualisation-2/main/Fortune%20500%20Global%20List%202020_Someka_V1_pureData.csv"
+  },
+  "params": [{
+    "name": "Select_country",
+    "bind": {
+      "input": "select",
+      "options": [
+        null,
+        "United States",
+        "China",
+        "Germany",
+        "Japan",
+        "United Kingdom",
+        "France",
+        "South Korea",
+        "Australia"
+      ],
+      "labels" : [
+        "All countries",
+        "United States",
+        "China",
+        "Germany",
+        "Japan",
+        "United Kingdom",
+        "France",
+        "South Korea",
+        "Australia"
+      ],
+      "name": "Filter by country: "
+    }
+  }], 
+  "transform": [
+    {"filter": "Select_country == null || datum.Country == Select_country"}
+  ],
+  "encoding": {
+    "x": {
+      "field": "Profits",
+      "type": "quantitative",
+      "title": "Profits (US$ million)",
+      "axis": {"tickCount": 5 }, 
+      "scale": {"type": "log", "domain": [1, 100000] }
+    },
+    "y": {
+      "field": "Number of employees",
+      "type": "quantitative",
+      "axis": {"tickCount": 4 },
+      "scale": {"type": "log", "domain": [1000, 10000000]}
+    }
+  },
+  "layer": [
+    {
+    "selection": {
+      "country_focus": {
+        "type": "multi",
+        "fields": ["Country"],
+        "bind": "legend"
+      }
+    },
+    "mark": "circle",
+    "encoding": {
+      "color": {
+        "field": "Country",
+        "type": "nominal"     
+      },
+      "size": {
+        "field": "Assets",
+        "type": "quantitative"
+      },
+      "tooltip" : [
+        {"field": "Company Name", "type": "nominal" },
+        {"field": "Country", "type": "nominal" },
+        {"field": "Rank", "type": "ordinal" }
+      ]
+    }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "dx": -15,
+        "fontSize": 12
+      },
+      "encoding": {
+        "text": {"field": "Company Name", "type": "nominal" },
+        "color": {"value": "black"},
+        "opacity": {
+          "condition": { 
+            "test": "datum['Company Name'] == 'Walmart' || datum['Company Name'] == 'Saudi Aramco' || datum['Company Name'] == 'AT&T' || datum['Company Name'] == 'Amazon.com' || datum['Company Name'] == 'Woolworths Group'",
+            "value": 1
+          },
+          "value": 0
+        }
+      }
+    }
+  ]
+}
