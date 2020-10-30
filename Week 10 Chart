@@ -47,7 +47,7 @@
       "scale": {"type": "log", "domain": [1, 100000] }
     },
     "y": {
-      "field": "Number of employees",
+      "field": "Number_of_employees",
       "type": "quantitative",
       "axis": {"tickCount": 4 },
       "scale": {"type": "log", "domain": [1000, 10000000]}
